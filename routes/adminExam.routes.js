@@ -15,7 +15,6 @@ import {
   authorisedRoles,
   authorizeSubscriber,
 } from "../middleware/auth.middleware.js";
-import upload from "../middleware/multer.middleware.js";
 
 router.route("/withId/:catId").get(getAllCourses); //incomplete
 

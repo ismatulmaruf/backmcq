@@ -23,9 +23,10 @@ app.use(morgan("dev"));
 // app.use(cors({ origin: [process.env.CLIENT_URL], credentials: true }));
 
 const corsOptions = {
-  origin: "*" || process.env.CLIENT_URL, // Default to '*' if CORS_ORIGIN is not set
+  origin: process.env.CLIENT_URL || "*", // Default to '*' if CORS_ORIGIN is not set
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
