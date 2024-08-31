@@ -196,7 +196,7 @@ const getAllExams = async (req, res) => {
     const { catId } = req.params; // Extract category ID from route parameters
     const user = await User.findById(id).select("subscribe examResults"); // Fetch user's subscribed exams and exam results
 
-    console.log(catId);
+    // console.log(catId);
 
     // Find exams that belong to the specified category
     const exams = await examModel.find({ categoryID: catId }).select("-mcqs");

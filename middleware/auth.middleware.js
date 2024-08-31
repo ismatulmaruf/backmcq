@@ -46,8 +46,8 @@ const authorizeSubscriber = async (req, res, next) => {
     const { role, id } = req.user; // Extract user role and ID from the request
     const { catId, examId } = req.params; // Extract exam ID from the request parameters
 
-    console.log("exam", examId);
-    console.log("catId", catId);
+    // console.log("exam", examId);
+    // console.log("catId", catId);
 
     // Find the exam by ID
     const exam = await examModel.findById(examId);

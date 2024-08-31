@@ -20,7 +20,7 @@ const getAllCourses = async (req, res, next) => {
 
 // create course
 const createExam = async (req, res, next) => {
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const {
       examNMmbr,
