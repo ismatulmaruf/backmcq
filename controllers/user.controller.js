@@ -313,7 +313,7 @@ const updateUser = async (req, res, next) => {
     const { fullName, collage, phone } = req.body;
     const { id } = req.user;
 
-    console.log(fullName);
+    // console.log(fullName);
 
     const user = await userModel.findById(id);
 
@@ -343,6 +343,55 @@ const updateUser = async (req, res, next) => {
   }
 };
 
+const makeAdorIN = async (req, res) => {
+  const { id } = req.params;
+  const { role } = req.body;
+
+  if (!["USER", "ADMIN", "INSTRUCTOR"].includes(role)) {
+    return res.status(400).json({ success: false, message: "Invalid role" });
+  }
+
+  try {
+    const user = await userModel.findByIdAndUpdate(id, { role }, { new: true });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.json({
+      success: true,
+      message: "Role updated successfully",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
+const deleteUserAdmin = async (req, res) => {
+  try {
+    const userId = req.params.id;
+
+    // Check if user exists
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+
+    // Delete the user
+    await userModel.findByIdAndDelete(userId);
+
+    res
+      .status(200)
+      .json({ success: true, message: "User deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+};
+
 export {
   register,
   login,
@@ -355,4 +404,6 @@ export {
   getAllUsers,
   addSubscription,
   removeSubscription,
+  makeAdorIN,
+  deleteUserAdmin,
 };

@@ -12,7 +12,9 @@ import {
   updateUser,
   getAllUsers,
   addSubscription,
+  makeAdorIN,
   removeSubscription,
+  deleteUserAdmin,
 } from "../controllers/user.controller.js";
 import { authorisedRoles, isLoggedIn } from "../middleware/auth.middleware.js";
 
@@ -43,5 +45,19 @@ router.post("/reset", forgotPassword);
 router.post("/reset/:resetToken", resetPassword);
 router.post("/change-password", isLoggedIn, changePassword);
 router.post("/update/:id", isLoggedIn, updateUser);
+
+router.put(
+  "/:id/update-role",
+  isLoggedIn,
+  authorisedRoles("ADMIN"),
+  makeAdorIN
+);
+
+router.delete(
+  "/:id/delete-user",
+  isLoggedIn,
+  authorisedRoles("ADMIN"),
+  deleteUserAdmin
+);
 
 export default router;
