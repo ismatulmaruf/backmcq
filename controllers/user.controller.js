@@ -141,6 +141,20 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const getAllUserswithResult = async (req, res, next) => {
+  try {
+    const users = await userModel.find({}); // Exclude examResults field
+
+    res.status(200).json({
+      success: true,
+      message: "All users",
+      users,
+    });
+  } catch (e) {
+    return next(new AppError("Failed to fetch users", 500));
+  }
+};
+
 const addSubscription = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -406,4 +420,5 @@ export {
   removeSubscription,
   makeAdorIN,
   deleteUserAdmin,
+  getAllUserswithResult,
 };

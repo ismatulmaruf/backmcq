@@ -15,6 +15,7 @@ import {
   makeAdorIN,
   removeSubscription,
   deleteUserAdmin,
+  getAllUserswithResult,
 } from "../controllers/user.controller.js";
 import { authorisedRoles, isLoggedIn } from "../middleware/auth.middleware.js";
 
@@ -27,6 +28,12 @@ router.get(
   isLoggedIn,
   authorisedRoles("ADMIN", "INSTRUCTOR"),
   getAllUsers
+);
+router.get(
+  "/allwithresult",
+  isLoggedIn,
+  authorisedRoles("ADMIN", "INSTRUCTOR"),
+  getAllUserswithResult
 );
 router.post(
   "/addsubscription/:userId",
