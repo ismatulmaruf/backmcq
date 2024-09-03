@@ -7,6 +7,7 @@ import userRoutes from "./routes/user.routes.js";
 import examRoutes from "./routes/exam.routes.js";
 import adExamRoutes from "./routes/adminExam.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
+import paymentsRoutes from "./routes/payment.rotes.js";
 // import paymentRoutes from "./routes/payment.routes.js";
 import miscellaneousRoutes from "./routes/miscellaneous.routes.js";
 import express from "express";
@@ -37,6 +38,7 @@ app.use("/api/v1/courses", adExamRoutes);
 app.use("/api/v1/category", categoryRoutes);
 // app.use("/api/v1/payments", paymentRoutes);
 app.use("/api/v1/", miscellaneousRoutes);
+app.use("/api/v1", paymentsRoutes);
 
 app.all("*", (req, res) => {
   res.status(404).send("OOPS!! 404 page not found");
