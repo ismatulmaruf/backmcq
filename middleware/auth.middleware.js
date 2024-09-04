@@ -20,9 +20,12 @@ const isLoggedIn = async (req, res, next) => {
 const authorisedRoles =
   (...roles) =>
   async (req, res, next) => {
+    const { id } = req.user;
+    const user = await userModel.findById(id);
+    // console.log();
     // console.log(req.user);
     const currentUserRoles = req.user.role;
-    if (!roles.includes(currentUserRoles)) {
+    if (!roles.includes(currentUserRoles) || !(user.role === req.user.role)) {
       return next(
         new AppError("You do not have permission to access this routes", 403)
       );
