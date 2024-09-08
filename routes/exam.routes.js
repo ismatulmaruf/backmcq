@@ -5,7 +5,7 @@ import {
   getAExamAnswer,
   postExamAnswer,
   getAllExams,
-  getAllExamsForNonUser,
+  getResultRanking,
 } from "../controllers/exam.controller.js";
 import {
   isLoggedIn,
@@ -15,13 +15,12 @@ import {
 
 router.get("/all/:catId", isLoggedIn, getAllExams);
 
-router.get("/nonUser", getAllExamsForNonUser);
-
-// Fetch the exam
-router.get("/:catId/:examId", isLoggedIn, authorizeSubscriber, getAExam);
-
-// Submit the exam
-router.post("/:catId/:examId", isLoggedIn, authorizeSubscriber, postExamAnswer);
+router.get(
+  "/ranking/:examId",
+  isLoggedIn,
+  authorizeSubscriber,
+  getResultRanking
+);
 
 router.get(
   "/withAns/:catId/:examId",
@@ -29,5 +28,14 @@ router.get(
   authorizeSubscriber,
   getAExamAnswer
 );
+
+// Fetch the exam
+router.get("/:catId/:examId", isLoggedIn, authorizeSubscriber, getAExam);
+
+// router.get("/nonUser", getAllExamsForNonUser);
+
+router.post("/:catId/:examId", isLoggedIn, authorizeSubscriber, postExamAnswer);
+
+// Submit the exam
 
 export default router;

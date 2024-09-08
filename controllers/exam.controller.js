@@ -230,16 +230,50 @@ const getAllExams = async (req, res) => {
   }
 };
 
-const getAllExamsForNonUser = async (req, res) => {
+const getResultRanking = async (req, res) => {
   try {
-    const exams = await examModel.find({}).select("-mcqs");
+    const { examId } = req.params;
 
-    if (!exams || exams.length === 0) {
-      return res.status(404).json({ message: "No exams found" });
+    // Find users who have taken this exam
+    const users = await User.find({ "examResults.examId": examId })
+      .select("fullName email phone examResults")
+      .lean();
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({ message: "No users found for this exam." });
     }
 
-    res.json(exams); // Directly send the response
+    // Filter exam results and map user information along with their total score for the specific exam
+    const rankings = users
+      .map((user) => {
+        // Find the exam result for this specific exam
+        const examResult = user.examResults.find(
+          (result) => result.examId.toString() === examId
+        );
+
+        // Return user information with score if exam result exists
+        return examResult
+          ? {
+              name: user.fullName,
+              phone: user.phone,
+              email: user.email,
+              totalMark: examResult.score,
+            }
+          : null;
+      })
+      .filter(Boolean) // Remove any null results
+      .sort((a, b) => b.totalMark - a.totalMark); // Sort by total marks in descending order
+
+    if (rankings.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No one has submitted the exam results yet." });
+    }
+
+    // Return the sorted rankings
+    res.json(rankings);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: "Server error" });
   }
 };
@@ -249,5 +283,5 @@ export {
   postExamAnswer,
   getAExamAnswer,
   getAllExams,
-  getAllExamsForNonUser,
+  getResultRanking,
 };
