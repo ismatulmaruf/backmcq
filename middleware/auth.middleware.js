@@ -69,7 +69,11 @@ const authorizeSubscriber = async (req, res, next) => {
     const user = await userModel.findById(id).select("subscribe");
 
     // If the user is an admin or is subscribed to the exam, grant access
-    if (role === "ADMIN" || user.subscribe.includes(catId)) {
+    if (
+      role === "ADMIN" ||
+      role === "INSTRUCTOR" ||
+      user.subscribe.includes(catId)
+    ) {
       return next();
     }
 
