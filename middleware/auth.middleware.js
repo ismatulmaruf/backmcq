@@ -54,7 +54,7 @@ const authorizeSubscriber = async (req, res, next) => {
 
     // Find the exam by ID
     const exam = await examModel.findById(examId);
-    console.log(exam);
+    // console.log(exam);
 
     if (!exam) {
       return next(new AppError("Exam not found", 404));
